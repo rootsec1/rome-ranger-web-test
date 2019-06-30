@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Rome Ranger",
+  "name": "An application with a graphical interface to manage and maintain a list of family members in Ancient Rome.",
   "icons": [
     {
       "src": "favicon.ico",
