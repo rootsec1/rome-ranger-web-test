@@ -6,6 +6,9 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import config from '../../config';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,8 +69,13 @@ export default function SearchAppBar() {
       <AppBar style={{backgroundColor: config.COLOR_PRIMARY}} position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            Rome Ranger
+            The Anicent Family of Rome!
           </Typography>
+          <Tooltip title='Add new family member' style={{marginRight: 8}}>
+            <IconButton>
+              <AddIcon style={{color: 'white'}} />
+            </IconButton>
+          </Tooltip>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
