@@ -1,9 +1,5 @@
 # Rome Ranger CRUD Web App
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/29552387-f225-4a2f-b10f-c415bd119133/deploy-status)](https://app.netlify.com/sites/romerangergo-internship-test/deploys)
-
-You find the live demo [here](https://romerangergo-internship-test.netlify.com)
-
 ## Instructions
 - Clone the Repo
 - Run `yarn` to install the required packages
