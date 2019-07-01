@@ -8,7 +8,10 @@ import {
     DialogContent,
     DialogTitle,
     TextField,
-    Button
+    Button,
+    Radio,
+    RadioGroup,
+    FormControlLabel
 } from '@material-ui/core';
 import {
     withStyles
@@ -76,7 +79,14 @@ class Homepage extends React.Component {
                 relationship: 'Brother'
             }
         ],
-        dataToDisplay: []
+        dataToDisplay: [],
+        newPerson: {
+            name: '',
+            alive: false,
+            dob: new Date(),
+            occupation: '',
+            relationship: ''
+        }
     };
 
     constructor(props) {
@@ -84,6 +94,8 @@ class Homepage extends React.Component {
         this.filterFamilyArray = this.filterFamilyArray.bind(this);
         this.modifyMemberInfo = this.modifyMemberInfo.bind(this);
         this.showModal = this.showModal.bind(this);
+        this.addNewMemberToFamily = this.addNewMemberToFamily.bind(this);
+        this.deleteMemberFromFamily = this.deleteMemberFromFamily.bind(this);
     }
 
     componentDidMount() {
@@ -121,6 +133,29 @@ class Homepage extends React.Component {
         this.setState({ modalOpen: false });
     }
 
+    addNewMemberToFamily() {
+        let newFamily = this.state.family.push(this.state.newPerson);
+        this.setState({ family: newFamily, modalOpen: false });
+    }
+
+    deleteMemberFromFamily(index) {
+        let newFamily = this.state.family;
+        newFamily.splice(index, 1);
+        this.setState({ family: newFamily });  
+    }
+
+    convertDateToString(date) {
+        let day = date.getDate().toString();
+        let month = date.getMonth().toString();
+        let year = date.getFullYear().toString();
+        if(day.length==='1') day='0'+day;
+        if(month.length==='1') month='0'+month;
+        if(year.length==='1') year='000'+year;
+        else if(year.length==='2') year='00'+year;
+        else if(year.length==='3') year='000'+year;
+        return new Date(year+'-'+month+'-'+date);
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -141,7 +176,11 @@ class Homepage extends React.Component {
                                 <List>
                                     {
                                         this.state.dataToDisplay.map((person,index) =>
-                                            <FamilyMember key={index} person={person} modifyMemberInfo={this.modifyMemberInfo} />
+                                            <FamilyMember
+                                                key={index} person={person}
+                                                modifyMemberInfo={this.modifyMemberInfo}
+                                                deleteFunction={this.deleteMemberFromFamily}
+                                            />
                                         )
                                     }
                                 </List>
@@ -155,13 +194,71 @@ class Homepage extends React.Component {
                                     margin="dense"
                                     label="Name"
                                     fullWidth
+                                    onChange={(event) => {
+                                        let tempPerson = this.state.newPerson;
+                                        tempPerson.name = event.target.value;
+                                        this.setState({ newPerson: tempPerson });
+                                    }}
                                 />
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    label="Relationship with Head"
+                                    fullWidth
+                                    onChange={(event) => {
+                                        let tempPerson = this.state.newPerson;
+                                        tempPerson.relationship = event.target.value;
+                                        this.setState({ newPerson: tempPerson });
+                                    }}
+                                />
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    label="Occupation"
+                                    fullWidth
+                                    onChange={(event) => {
+                                        let tempPerson = this.state.newPerson;
+                                        tempPerson.occupation = event.target.value;
+                                        this.setState({ newPerson: tempPerson });
+                                    }}
+                                />
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    label="Birthday (YYYY-MM-DD)"
+                                    fullWidth
+                                    onChange={(event) => {
+                                        let tempPerson = this.state.newPerson;
+                                        tempPerson.dob = new Date(event.target.value);
+                                        this.setState({ newPerson: tempPerson });
+                                    }}
+                                />
+                                <RadioGroup
+                                    name='AliveOrDeceased'
+                                    value={ this.state.newPerson.alive?'Alive':'Deceased' }
+                                    onChange={(event) => {
+                                        let tempPerson = this.state.newPerson;
+                                        tempPerson.alive = event.target.value==='Alive';
+                                        this.setState({ newPerson: tempPerson });
+                                    }}
+                                >
+                                        <FormControlLabel
+                                            value='Alive'
+                                            control={<Radio color="primary" />}
+                                            label="Alive"
+                                        />
+                                        <FormControlLabel
+                                            value='Deceased'
+                                            control={<Radio color="primary" />}
+                                            label="Deceased"
+                                        />
+                                </RadioGroup>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={()=>this.setState({ modalOpen: false })} color="secondary">
                                     Cancel
                                 </Button>
-                                <Button color="primary">
+                                <Button onClick={this.addNewMemberToFamily} color="primary">
                                     Add
                                 </Button>
                             </DialogActions>
@@ -181,10 +278,7 @@ const styles = {
         bottom: 0,
         left: 0,
         right: 0,
-        flexDirection: 'column',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        height: window.innerHeight*2
     }
 };
 

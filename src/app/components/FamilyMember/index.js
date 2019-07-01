@@ -113,7 +113,7 @@ class FamilyMember extends React.Component {
                                         label="Deceased"
                                     />
                             </RadioGroup>
-                            <Button variant="contained" color="secondary">
+                            <Button variant="contained" color="secondary" onClick={() => this.props.deleteFunction(key)}>
                                 <Delete />
                                 Delete
                             </Button>
